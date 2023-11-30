@@ -67,6 +67,13 @@ def simulate_disease():
         contagion_rate_list.append(contagion_rate)
         mortality_rate_list.append(mortality_rate)
         
+        # Apply mortality rate to infected individuals each day
+        for person_id, attributes in population.items():
+            if attributes['infected'] and not attributes['dead']:
+                # Check if the infected person succumbs to the disease based on mortality rate
+                if random.random() < mortality_rate:
+                    population[person_id]['dead'] = True
+
         # Simulate spread of infection and mortality
         population = spread_infection(population, contagion_rate, num_interactions_per_day, mortality_rate)
         
@@ -106,6 +113,5 @@ def simulate_disease():
     
     plt.tight_layout()
     plt.show()
-
-# Run the simulation
+    
 simulate_disease()
